@@ -204,6 +204,45 @@ GPIO.cleanup()             #  Cleanup GPIO settings
   - For a comprehensive and detailed **GPIO pinout guide**, check the official [**Raspberry Pi GPIO Pinout**](https://www.raspberrypi.org/documentation/).
 
 
+## 🔎 Discovering 
+
+# Technical Concepts
+
+## 1. Servo Motor
+* **Description:** A type of actuator that rotates to a specific position.
+* **Example:** Controlling the position of a robotic arm.
+* [Servo Motor](https://www.servocity.com/servos)
+
+## 2. GUI App Startup
+* **Description:** The process of launching a graphical user interface (GUI) application.
+* **Example:** Opening a web browser or a desktop application.
+* [GUI App](https://www.techopedia.com/definition/5437/graphical-user-interface-gui)
+
+## 3. Bring Up Device
+* **Description:** The process of initializing and starting a device or component.
+* **Example:** Powering on a microcontroller and configuring its peripherals.
+* [Device Startup](https://www.embedded.com/bringing-up-an-embedded-system/)
+
+## 4. UART (Universal Asynchronous Receiver/Transmitter)
+* **Description:** A serial communication protocol for transmitting data between devices.
+* **Example:** Connecting a microcontroller to a GPS module.
+* [UART](https://www.sparkfun.com/pages/serial_communication)
+
+## 5. SPI (Serial Peripheral Interface)
+* **Description:** A synchronous serial communication protocol for connecting multiple devices on a single bus.
+* **Example:** Connecting a microcontroller to a sensor or an external memory chip.
+* [SPI](https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html)
+
+## 6. I2C (Inter-Integrated Circuit)
+* **Description:** A serial communication protocol for connecting multiple devices on a two-wire bus.
+* **Example:** Connecting a microcontroller to an accelerometer or a temperature sensor.
+* [I2C](https://www.i2c-bus.org/)
+
+## 7. Device Tree
+* **Description:** A data structure used in Linux to describe hardware devices and their properties.
+* **Example:** Configuring GPIO pins, clocks, and memory addresses for a microcontroller.
+* [Device Tree](https://elinux.org/Device_Tree_Reference)
+
 
 
 
