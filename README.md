@@ -83,4 +83,127 @@ Share files with:
   ```bash
   scp file.txt pi@<IP_ADDRESS>:/home/pi/
 
+## 🔌 GPIO Control
+
+
+# ⚡ GPIO Control Setup
+
+## GPIO Export
+To export a GPIO pin, use the following command:
+```
+echo <pin_number> > /sys/class/gpio/export 
+Example (Export pin 17):
+echo 17 > /sys/class/gpio/export
+```
+## Set Direction
+After exporting the pin, set the direction to either `in` or `out`:
+```
+echo "out" > /sys/class/gpio/gpio<pin_number>/direction
+Example (Set pin 17 as output):
+echo "out" > /sys/class/gpio/gpio17/direction
+```
+## Set Value
+```
+To control the pin value (high or low), use:
+echo 1 > /sys/class/gpio/gpio<pin_number>/value
+To turn the pin on (high):
+echo 1 > /sys/class/gpio/gpio17/value
+To turn the pin off (low):
+echo 0 > /sys/class/gpio/gpio17/value
+```
+
+**Full Example**
+Here’s an example of exporting pin 17, setting it as an output, and turning it on (high):
+
+```
+echo 17 > /sys/class/gpio/export    # Export pin 17
+echo "out" > /sys/class/gpio/gpio17/direction  # Set as output
+echo 1 > /sys/class/gpio/gpio17/value  # Turn pin 17 high
+```
+
+And turning it off (low):
+```
+echo 0 > /sys/class/gpio/gpio17/value  # Turn pin 17 low
+```
+## 🔦 Notes:
+
+1- Replace <pin_number> with the actual GPIO pin number.
+
+2- Ensure the pin is correctly exported before setting direction or value.
+
+3- You may need root privileges to access GPIO files.
+
+# 💻 GPIO Control: Programming Examples
+
+## **C Example (Using WiringPi Library)**
+
+In this C example, we'll use the **WiringPi** library to control a GPIO pin and turn an LED on and off.
+
+```c
+#include <wiringPi.h>
+
+int main() {
+    wiringPiSetup();           // Initialize WiringPi library
+    pinMode(0, OUTPUT);        // Set GPIO pin 0 as output
+    digitalWrite(0, HIGH);     // Turn LED on (HIGH)
+    delay(1000);               // Wait for 1 second
+    digitalWrite(0, LOW);      // Turn LED off (LOW)
+    return 0;
+}
+```
+## **Explanation**
+
+-  **`wiringPiSetup()`**: Initializes the WiringPi library to set up the GPIO pin control system.
+-  **`pinMode(0, OUTPUT)`**: Configures GPIO pin 0 as an **output** pin, allowing it to send signals.
+-  **`digitalWrite(0, HIGH)`**: Turns the **LED on** by sending a **HIGH signal** (3.3V) to GPIO pin 0.
+-  **`delay(1000)`**: Pauses the program for **1 second** to keep the LED on.
+-  **`digitalWrite(0, LOW)`**: Turns the **LED off** by sending a **LOW signal** (0V) to GPIO pin 0.
+
+
+## **Python Example:**
+
+```python
+import RPi.GPIO as GPIO    #  Import the RPi.GPIO library
+import time                #  Import the time library for sleep functionality
+
+GPIO.setmode(GPIO.BCM)     #  Set the GPIO mode to BCM (Broadcom pin numbering)
+GPIO.setup(18, GPIO.OUT)   #  Set GPIO pin 18 as an output
+
+GPIO.output(18, GPIO.HIGH)  #  Turn the LED on (send HIGH signal)
+time.sleep(1)               #  Wait for 1 second
+
+GPIO.output(18, GPIO.LOW)   #  Turn the LED off (send LOW signal)
+GPIO.cleanup()              #  Cleanup GPIO settings
+```
+## 🔄 **Pulse Width Modulation (PWM)**
+
+PWM allows precise control of devices like servos and motors by varying the duty cycle. Here's an example setup to control an LED's brightness or motor speed:
+
+```python
+import RPi.GPIO as GPIO   #  Import the RPi.GPIO library
+import time               #  Import the time library for sleep functionality
+
+GPIO.setmode(GPIO.BCM)    #  Set GPIO mode to BCM (Broadcom pin numbering)
+GPIO.setup(18, GPIO.OUT)  #  Set GPIO pin 18 as an output
+
+# PWM Setup
+pwm = GPIO.PWM(18, 100)   #  Initialize PWM on pin 18 with 100 Hz frequency
+pwm.start(50)              #  Start PWM with a 50% duty cycle (50% on, 50% off)
+
+time.sleep(2)              #  Wait for 2 seconds to observe PWM effect
+pwm.stop()                 #  stop the PWM signal
+GPIO.cleanup()             #  Cleanup GPIO settings
+```
+
+## 📘 **Further Resources**
+
+- 📚 **Datasheets and Documentation**: 
+  - For a deeper understanding of GPIO functionality and more detailed information, refer to the [**ARM Developer Documentation**](https://developer.arm.com/).
+
+- 🗺️ **GPIO Pinout**: 
+  - For a comprehensive and detailed **GPIO pinout guide**, check the official [**Raspberry Pi GPIO Pinout**](https://www.raspberrypi.org/documentation/).
+
+
+
+
 
