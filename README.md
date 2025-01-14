@@ -1711,7 +1711,7 @@ dmesg | grep MLX90614
 | 1 | Disable Wi-Fi | `sudo ifconfig wlan0 down` |
 | 2 | Clone the documentation repository | ``` git clone https://github.com/example/documentation-repo.git cd documentation-repo ``` |
 | 3 | Install Bluetooth tools | `sudo apt-get install bluetooth bluez` |
-| 4 | Start the Bluetooth service | ``` 1- sudo systemctl start bluetooth  2-sudo systemctl enable bluetooth ``` |
+| 4 | Start the Bluetooth service | ``` 1- sudo systemctl start bluetooth   2-sudo systemctl enable bluetooth ``` |
 | 5 | Use `bluetoothctl` to configure Bluetooth | `bluetoothctl` |
 | 6 | Turn on the Bluetooth controller | `power on` |
 | 7 | Make the controller discoverable | `discoverable on` |
