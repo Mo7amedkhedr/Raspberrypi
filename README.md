@@ -1489,7 +1489,6 @@ This document provides an overview of the bringup process for various hardware d
 2. [Bringup MLX90614](#bringup-mlx90614)
 3. [Kernel Update](#kernel-update)
 4. [Bluetooth Setup](#bluetooth-setup)
-5. [Tasks Overview](#tasks-overview)
 
 ---
 
@@ -1665,3 +1664,107 @@ dmesg | grep MLX90614
 
 
 ✅ Driver successfully brought up!
+
+
+
+## Kernel Update 🛠️
+
+### Steps to Update Kernel
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Check the current kernel version | `uname -r` |
+| 2 | Clone the Raspberry Pi Linux source | ``` git clone https://github.com/raspberrypi/linux.git cd linux ``` |
+| 3 | Install cross-compiler tools | ``` sudo apt install crossbuild-essential-armhf git bc bison flex libssl-dev make libc6-dev libncurses5-dev ``` |
+| 4 | Configure the kernel | ``` make menuconfig ``` |
+| 5 | Build the kernel (this may take time) | ``` make -j$(nproc) ``` |
+| 6 | Build the kernel modules | ``` make modules ``` |
+| 7 | Install the kernel modules | ``` sudo make modules_install ``` |
+| 8 | Build the device tree blobs | ``` make dtbs ``` |
+
+### Post-Build
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Send the kernel to the target device | ``` 1- scp arch/arm/boot/zImage user@target_device:/boot/   2- scp arch/arm/boot/dts/*.dtb user@target_device:/boot/     3- scp arch/arm/boot/dts/overlays/*.dtb* user@target_device:/boot/overlays/     4- scp arch/arm/boot/dts/overlays/README user@target_device:/boot/overlays/ ``` |
+| 2 | Update the boot configuration | ``` sudo nano /boot/config.txt ``` |
+| 3| Add or modify the following lines| ``` kernel=zImage ``` |
+| 4 | Reboot the target device | ``` sudo reboot ``` |
+| 5 | Verify the kernel update | ``` uname -r ``` |
+
+### Example: Cloning Documentation Repository
+
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Clone the documentation repository | ``` git clone https://github.com/example/documentation-repo.git cd documentation-repo ``` |
+
+### ✅ Kernel successfully updated!
+
+
+## Bluetooth Setup 🎧
+
+### Steps
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Disable Wi-Fi | `sudo ifconfig wlan0 down` |
+| 2 | Clone the documentation repository | ``` git clone https://github.com/example/documentation-repo.git cd documentation-repo ``` |
+| 3 | Install Bluetooth tools | `sudo apt-get install bluetooth bluez` |
+| 4 | Start the Bluetooth service | ``` 1- sudo systemctl start bluetooth  2-sudo systemctl enable bluetooth ``` |
+| 5 | Use `bluetoothctl` to configure Bluetooth | `bluetoothctl` |
+| 6 | Turn on the Bluetooth controller | `power on` |
+| 7 | Make the controller discoverable | `discoverable on` |
+| 8 | Make the controller pairable | `pairable on` |
+| 9 | Scan for devices | `scan on` |
+| 10 | Pair with a device (replace `XX:XX:XX:XX:XX:XX` with the device's MAC address) | `pair XX:XX:XX:XX:XX:XX` |
+| 11 | Connect to the device | `connect XX:XX:XX:XX:XX:XX` |
+| 12 | Trust the device | `trust XX:XX:XX:XX:XX:XX` |
+
+### 🎉 Bluetooth Setup Complete!
+
+
+
+## Resources 📚
+
+### Linux Kernel Documentation
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Clone the Linux Kernel Documentation repository | ```bash git clone https://github.com/torvalds/linux.git cd linux/Documentation ``` |
+| 2 | Navigate to the relevant documentation | - For general kernel documentation: ```bash cd admin-guide ``` - For device tree bindings: ```bash cd devicetree/bindings ``` |
+| 3 | View specific documentation files | - For kernel parameters: ```bash cat kernel-parameters.txt ``` - For device tree bindings: ```bash cat devicetree/bindings.txt ``` |
+
+### Example Device Tree YAML
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Clone the example device tree YAML repository | ```bash git clone https://github.com/example/device-tree-yaml.git cd device-tree-yaml ``` |
+| 2 | Navigate to the LED GPIO example | ```bash cd leds-gpio ``` |
+| 3 | View the `leds-gpio.yaml` file | ```bash cat leds-gpio.yaml ``` |
+| 4 | Navigate to the MLX90614 example | ```bash cd mlx ``` |
+| 5 | View the `mlx90614.yaml` file | ```bash cat mlx90614.yaml ``` |
+| 6 | Modify the device tree YAML files as needed | - Edit `leds-gpio.yaml`: ```bash nano leds-gpio.yaml ``` - Edit `mlx90614.yaml`: ```bash nano mlx90614.yaml ``` |
+
+### Example: Editing Device Tree YAML
+
+| Step | Description | Example |
+|------|-------------|---------|
+| 1 | Original `leds-gpio.yaml` | ```compatible: "gpio-leds" leds { led0 { gpios = <&gpio 17 0>; label = "led0"; }; }; ``` |
+| 2 | Modified `leds-gpio.yaml` | ``` compatible: "gpio-leds" leds { led0 { gpios = <&gpio 17 0>; label = "led0"; default-state = "on"; }; led1 { gpios = <&gpio 18 0>; label = "led1"; default-state = "off"; }; }; ``` |
+| 3 | Original `mlx90614.yaml` | ``` compatible: "melexis,mlx90614" reg = <0x5a>; ``` |
+| 4 | Modified `mlx90614.yaml` | ``` compatible: "melexis,mlx90614" reg = <0x5a>; interrupt-parent = <&gpio>; interrupts = <23 0>; ``` |
+
+### Compile and Deploy Device Tree YAML
+
+| Step | Description | Command |
+|------|-------------|---------|
+| 1 | Compile the device tree YAML files | ``` dtc -I dts -O dtb -o leds-gpio.dtb leds-gpio.yaml dtc -I dts -O dtb -o mlx90614.dtb mlx90614.yaml ``` |
+| 2 | Replace the device tree blobs in /boot | ``` sudo cp leds-gpio.dtb /boot/leds-gpio.dtb sudo cp mlx90614.dtb /boot/mlx90614.dtb ``` |
+| 3 | Reboot the system | ``` sudo reboot ``` |
+
+### 🎉 Resources Setup Complete!
+
+
+
+
